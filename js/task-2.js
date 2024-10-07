@@ -32,9 +32,9 @@ const galleryItems = images.map((item) => {
   const li = document.createElement('li');
   const img = document.createElement('img');
 
+
   img.src = item.url;
   img.alt = item.alt;
-  img.classList.add('gallery-image');
 
   li.appendChild(img);
   return li;

@@ -1,41 +1,38 @@
-const buttonCreateEl = document.querySelector('[data-create]');
-const buttonDestroyEl = document.querySelector('[data-destroy]');
-const inputEl = document.querySelector('#controls input');
-const listBoxesEl = document.querySelector('div#boxes');
-
-buttonCreateEl.addEventListener('click', getInputValue);
-buttonDestroyEl.addEventListener('click', destroyBoxes);
-
 function getRandomHexColor() {
   return `#${Math.floor(Math.random() * 16777215)
     .toString(16)
     .padStart(6, 0)}`;
 }
 
-function getInputValue() {
-  listBoxesEl.innerHTML = '';
-  const inputValue = inputEl.value;
-  createBoxes(inputValue);
-  inputEl.value = '';
-}
+const controls = document.querySelector('#controls');
+const input = controls.querySelector('input');
+const createButton = controls.querySelector('button[data-create]');
+const destroyButton = controls.querySelector('button[data-destroy]');
+const boxes = document.querySelector('#boxes');
 
 function createBoxes(amount) {
-  if (amount > 100) {
-    return;
-  }
-  const docFragment = document.createDocumentFragment();
-  for (let i = 0; i < amount; i++) {
-    const createBox = document.createElement('div');
-    const size = 30 + i * 10;
+  let size = 30;
+  let boxHtml = '';
 
-    createBox.style.width = `${size}px`;
-    createBox.style.height = `${size}px`;
-    createBox.style.backgroundColor = getRandomHexColor();
-    docFragment.append(createBox);
+  for (let i = 0; i < amount; i++) {
+    boxHtml += `<div style="width: ${size}px; height: ${size}px; background-color: ${getRandomHexColor()};"></div>`;
+    size += 10;
   }
-  listBoxesEl.append(docFragment);
+
+  boxes.innerHTML = boxHtml;
 }
 
 function destroyBoxes() {
-  listBoxesEl.innerHTML = '';
+  boxes.innerHTML = '';
 }
+
+createButton.addEventListener('click', () => {
+  const amount = parseInt(input.value.trim());
+
+  if (amount >= 1 && amount <= 100) {
+    createBoxes(amount);
+  }
+  
+});
+
+destroyButton.addEventListener('click', destroyBoxes);
